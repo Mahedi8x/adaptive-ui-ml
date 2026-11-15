@@ -1,130 +1,52 @@
-# 📱 Context-Aware Adaptive User Interface (AUI) Machine Learning Framework
+# Adaptive UI Dataset - Data Dictionary & Guide
 
-[![Python Version](https://img.shields.io/badge/Python-3.10%2B-blue.svg?logo=python&logoColor=white)](https://www.python.org/)
-[![XGBoost Champion](https://img.shields.io/badge/Model-XGBoost%20(95.24%25%20Acc)-brightgreen.svg)]()
-[![Explainability](https://img.shields.io/badge/XAI-SHAP%20Interpretability-orange.svg)]()
-[![Domain](https://img.shields.io/badge/HCI-Human--Computer%20Interaction-purple.svg)]()
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-
-An intelligent, context-aware Machine Learning framework that dynamically personalizes and scales mobile user interface elements (Button geometries: `Small`, `Medium`, `Large`, `Extra_Large`) based on real-time Human-Computer Interaction (HCI) behavioral metrics, situational context, and user motor control dynamics.
+এই ফোল্ডারে (`adavtive_dataset`) HMOG এবং Touchalytics এর মূল র ডেটাসেটসমূহ এবং মডেল ট্রেইনের জন্য প্রস্তুতকৃত ফাইনাল ডেটাসেট সাজানো হয়েছে।
 
 ---
 
-## 📌 Executive Summary & Research Motivation
-
-Standard mobile user interfaces adopt a "one-size-fits-all" approach, leading to high miss-tap rates and elevated user cognitive load during movement (e.g., walking vs. sitting) or for users with diverse motor dexterity.
-
-This project delivers an end-to-end Machine Learning pipeline that:
-1. **Predicts Optimal Target Sizes** based on tactile interaction dynamics (reaction time, miss-tap rates, tap accuracy, inter-finger intervals).
-2. **Mitigates Cold-Start Latency** by providing instant heuristics before user session behavioral convergence.
-3. **Provides Explainable Decisions (XAI)** through SHAP (SHapley Additive exPlanations) analysis to demystify HCI feature importance.
-
----
-
-## 🔬 Benchmark Model Comparison
-
-Extensive comparative benchmarking across classic, ensemble, and neural classifiers:
-
-| Model Architecture | Accuracy | Macro Precision | Macro Recall | Macro F1-Score | Status |
-|---|---|---|---|---|---|
-| **Tuned XGBoost Classifier** | **95.24%** | **0.952** | **0.952** | **0.952** | 🏆 **Champion** |
-| Random Forest (100 Trees) | 91.80% | 0.919 | 0.918 | 0.918 | Baseline |
-| Decision Tree (CART) | 87.50% | 0.876 | 0.875 | 0.875 | Baseline |
-| Support Vector Machine (RBF) | 82.35% | 0.824 | 0.823 | 0.823 | Baseline |
-| Logistic Regression | 74.30% | 0.742 | 0.743 | 0.742 | Baseline |
-
-> Tuned via 5-Fold Stratified Cross-Validation with `GridSearchCV` on Bayesian hyperparameter spaces.
-
----
-
-## 📊 Key HCI Behavioral Features
-
-The model learns from dynamic interaction parameters:
-- **`tap_accuracy`**: Ratio of successful hits to total touch attempts (`successful_taps / total_taps`).
-- **`avg_reaction_time_ms`**: Latency between target presentation and touch event.
-- **`miss_rate`**: Percentage of taps landing outside target bounding boxes.
-- **`IFI` (Inter-Finger Interval)**: Temporal spacing between consecutive touch gestures.
-- **`screen_dimensions`**: Device viewport geometry (`screen_width`, `screen_height`).
-- **`contextual_state`**: User situational context (Static / Sitting vs. Dynamic / Walking).
-
----
-
-## 🔍 Explainable AI (SHAP Analysis)
-
-To guarantee safety in assistive interfaces, we employ **SHAP TreeExplainer**:
-- Identifies non-linear interactions between tap velocity and error rates.
-- Demonstrates that `avg_reaction_time_ms` and `miss_rate` contribute over **68% of feature attribution** when scaling buttons from `Medium` to `Extra_Large`.
-
----
-
-## 🚀 Quickstart & Pipeline Execution
-
-### 1. Installation
-```bash
-git clone https://github.com/AdaptiveUIReseach/new_data.git
-cd new_data
-pip install -r requirements.txt
-```
-
-### 2. Run Exploratory Data Analysis & Benchmark
-```bash
-python run_eda.py
-python run_cold_start_shap.py
-```
-
-### 3. Inference with Pre-trained Pipeline
-```python
-import joblib
-import pandas as pd
-
-# Load serialized artifacts
-model = joblib.load("saved_models/XGBoost.pkl")
-scaler = joblib.load("saved_models/feature_scaler.pkl")
-
-# Sample HCI incoming telemetrics
-sample_user = pd.DataFrame([{
-    "age": 28,
-    "screen_width": 1080,
-    "screen_height": 2400,
-    "total_taps": 15,
-    "successful_taps": 11,
-    "miss_taps": 4,
-    "tap_accuracy": 0.733,
-    "avg_reaction_time_ms": 420.5,
-    "miss_rate": 0.267,
-    "IFI": 0.65
-}])
-
-# Predict adaptive UI size class
-prediction = model.predict(scaler.transform(sample_user))
-print("Recommended Button Size:", prediction[0])
-```
-
----
-
-## 📂 Project Architecture
+## 📁 ফোল্ডার স্ট্রাকচার
 
 ```text
-adavtive_model/
-├── paper_figures/                  # Publication-grade figures & charts
-│   ├── cold_start_shap/            # SHAP summary & dependence plots
-│   └── eda/                        # Feature distribution & correlation heatmaps
-├── saved_models/                   # Exported serializations (.pkl & .json)
-│   ├── xgboost_champion.json       # Top-performing XGBoost model
-│   └── feature_scaler.pkl          # Pre-fitted StandardScaler
-├── 01_exploratory_data_analysis.ipynb
-├── 02_cold_start_ml_and_shap.ipynb
-├── run_cold_start_shap.py          # Standalone reproducible execution script
-├── run_eda.py                      # Data validation & summary stats
-├── requirements.txt                # Pinned dependencies
-└── README.md                       # Documentation
+adavtive_dataset/
+├── raw_data/
+│   ├── hmog/
+│   │   ├── hmog_activity_features.csv  (১০০ জন ইউজারের ১২,৪১৯ টি র সেশন/অ্যাক্টিভিটি)
+│   │   └── hmog_user_profiles.csv     (১০০ জন ইউজারের ওভারঅল প্রোফাইল)
+│   └── touchalytics/
+│       ├── data.csv                    (৫০ MB র টাচ লগ - ২,১১,৫৮০+ টাচ ইভেন্ট)
+│       ├── featMat.csv                 (২১,১৫৮ টি প্রি-প্রসেসড স্ট্রোক ডেটা)
+│       └── featureString.txt           (৩৪টি মূল ফিচারের নাম ও বিবরণ)
+├── processed/
+│   └── final_ready_dataset.csv         (মডেল ট্রেইনিংয়ের জন্য প্রস্তুত ৭,৪২৬ টি রো)
+└── generate_ready_dataset.py           (র ডেটা থেকে প্রস্তুতকৃত ডেটাসেট তৈরির স্ক্রিপ্ট)
 ```
 
 ---
 
-## 👨‍💻 Research & Development
+## 📊 ফাইনাল ডেটাসেট কলাম ও বিবরণ (`processed/final_ready_dataset.csv`)
 
-**MD Mohiuddin Mahedi**  
-- GitHub: [@mehedi2351](https://github.com/mehedi2351)  
-- Email: mohiuddinmahadi08@gmail.com  
-- Research Domain: Human-Computer Interaction (HCI), Applied ML, Adaptive Interfaces
+| কলামের নাম | ডেটা টাইপ | মান বা রেঞ্জ | কাজ / অর্থ |
+| :--- | :--- | :--- | :--- |
+| `user_id` | String | `hmog_xxx`, `touch_xxx` | ইউজারের ইউনিক আইডি (GroupKFold স্প্লিটে দরকার) |
+| `session_id` | String | সেশন আইডি | নির্দিষ্ট ইন্টারঅ্যাকশন বা সেশনের ট্র্যাকিং |
+| `source_dataset` | String | HMOG / Touchalytics | ডেটা কোন সোর্স থেকে এসেছে |
+| `context_is_walking` | Binary | `0` (বসা), `1` (হাঁটা) | ইউজার কি হাঁটছিল নাকি স্থির ছিল |
+| `touch_duration_mean_ms` | Float | ms (যেমন: 80.5) | স্ক্রিনে আঙুল কতক্ষণ স্পর্শ করেছিল |
+| `swipe_speed_mean_pxps` | Float | px/sec (যেমন: 650.2) | আঙুল সোয়াইপ বা স্ক্রোল করার গতি |
+| `swipe_distance_mean_px` | Float | পিক্সেল | এক সোয়াইপে কতদূর ড্র্যাগ করেছে |
+| `typing_speed_kpm` | Float | কী/মিনিট | কিবোর্ডে লেখার গতি (HMOG-এ আছে) |
+| `backspace_rate` | Float | 0.0 - 1.0 | ব্যাকস্পেস ব্যবহারের অনুপাত (টাইপিং ভুলের পরিমাপ) |
+| `contact_size_mean` | Float | 0.0 - 1.0 | স্ক্রিনে আঙুলের ক্ষেত্রফল/সাইজ |
+| `touch_x_mean` | Float | পিক্সেল | ট্যাপের X অবস্থান (হাতের পজিশন বুঝতে) |
+| `touch_y_mean` | Float | পিক্সেল | ট্যাপের Y অবস্থান (বুড়ো আঙুলের নাগাল বুঝতে) |
+| `tap_accuracy` | Float | 0.0 - 1.0 | ট্যাপের সঠিকতা |
+| `miss_rate` | Float | 0.0 - 1.0 | ভুল জায়গায় ট্যাপ পড়ার অনুপাত |
+| `reaction_time_mean_ms` | Float | ms (যেমন: 350.0) | টাস্ক দেখে ট্যাপ করতে কত সময় নিল |
+| `reaction_time_norm` | Float | 0.0 - 1.0 | নরমালাইজড রিঅ্যাকশন টাইম |
+| **`target_button_size`** | **Integer** | **0, 1, 2, 3** | **🎯 মডেলের Target Label** <br>• `0`: Small (40dp)<br>• `1`: Default (48dp)<br>• `2`: Large (56dp)<br>• `3`: Extra Large (64dp) |
+
+---
+
+## 🚀 পরবর্তী ধাপ:
+1. এই ডেটাসেট ব্যবহার করে Cold-Start Classifier (XGBoost / Random Forest) ট্রেন করা।
+2. বাটন সাইজের অ্যাডাপ্টেশন যাচাই করার জন্য RL Agent (Contextual Bandit বা Q-learning) চালানো।

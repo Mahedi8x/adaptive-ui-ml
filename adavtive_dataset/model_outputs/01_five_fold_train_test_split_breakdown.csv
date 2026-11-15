@@ -1,6 +1,0 @@
-Fold,Train_Samples,Train_Users,Test_Samples,Test_Users,Test_Ratio_Samples (%),Test_Ratio_Users (%)
-Fold 1,5940,113,1486,28,20.01,19.86
-Fold 2,5940,113,1486,28,20.01,19.86
-Fold 3,5941,113,1485,28,20.0,19.86
-Fold 4,5942,113,1484,28,19.98,19.86
-Fold 5,5941,112,1485,29,20.0,20.57

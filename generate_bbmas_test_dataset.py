@@ -7,7 +7,7 @@ import pandas as pd
 
 # Paths
 BBMAS_RAW_ROOT = r"c:\Users\Mehedi\OneDrive\Attachments\Desktop\reseach_data\BB-MAS_Dataset\BB-MAS_Dataset"
-BASE_DIR       = r"C:\Users\Mehedi\adavtive_model\adavtive_dataset"
+BASE_DIR       = r"C:\adavtive_dataset"
 RAW_BBMAS_DIR  = os.path.join(BASE_DIR, "raw_data", "bbmas")
 OUT_DIR        = os.path.join(BASE_DIR, "processed")
 
@@ -168,7 +168,7 @@ for u in user_dirs:
         })
 
         # =====================================================================
-        # EXACT HMOG FORMULA FROM generate_ready_dataset.py (Lines 66 - 104)
+        # EXACT HMOG FORMULA FROM generate_ready_dataset.py (Lines 35 - 73)
         # =====================================================================
         miss_rate = float(np.clip(err_rate, 0.02, 0.40))
         tap_acc   = 1.0 - miss_rate
