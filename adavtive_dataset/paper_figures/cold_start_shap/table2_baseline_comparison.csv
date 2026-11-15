@@ -1,0 +1,6 @@
+Algorithm,Accuracy (%),Precision (%),Recall (%),Macro F1 (%),Weighted F1 (%),Latency (ms/sample)
+Random Forest,99.95,99.95,99.95,99.91,99.95,0.0036
+Decision Tree (CART),99.93,99.93,99.93,99.9,99.93,0.0001
+XGBoost (Proposed),99.57,99.59,99.57,98.8,99.57,0.0013
+Support Vector Machine (SVM),98.24,98.31,98.24,95.96,98.24,0.0303
+Logistic Regression,97.75,97.8,97.75,95.54,97.75,0.0002

@@ -1,0 +1,25 @@
+{
+    "features": [
+        "context_is_walking",
+        "touch_duration_mean_ms",
+        "swipe_speed_mean_pxps",
+        "swipe_distance_mean_px",
+        "contact_size_mean",
+        "touch_x_mean",
+        "touch_y_mean",
+        "tap_accuracy",
+        "miss_rate",
+        "reaction_time_mean_ms",
+        "reaction_time_norm"
+    ],
+    "classes": {
+        "0": "Small (40dp)",
+        "1": "Default (48dp)",
+        "2": "Large (56dp)",
+        "3": "Extra Large (64dp)"
+    },
+    "metrics": {
+        "cv_accuracy": 0.9970369457936435,
+        "cv_f1": 0.9970487438551452
+    }
+}

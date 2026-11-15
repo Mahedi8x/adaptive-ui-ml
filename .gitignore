@@ -1,13 +1,3 @@
-# Python bytecode & cache
+*.zip
 __pycache__/
-*.py[cod]
-
-# Jupyter Notebook Checkpoints
 .ipynb_checkpoints/
-
-# Virtual Environments
-.venv/
-env/
-venv/
-
-adavtive_dataset/raw_data/
