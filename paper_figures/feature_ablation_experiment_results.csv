@@ -1,0 +1,21 @@
+Feature Scenario,Num Features,Model,HMOG Train Acc (%),BB-MAS Test Acc (%),BB-MAS Weighted F1 (%)
+Scenario 1: Pure Motor Dynamics (No miss_rate),9,Random Forest,100.0,98.89,98.89
+Scenario 1: Pure Motor Dynamics (No miss_rate),9,XGBoost,100.0,99.76,99.76
+Scenario 1: Pure Motor Dynamics (No miss_rate),9,Decision Tree,100.0,100.0,100.0
+Scenario 1: Pure Motor Dynamics (No miss_rate),9,Logistic Regression,85.84,31.55,18.77
+Scenario 1: Pure Motor Dynamics (No miss_rate),9,SVM,80.36,29.44,20.11
+Scenario 2: Minimal Touch Only (No typing/error),6,Random Forest,81.37,27.82,13.82
+Scenario 2: Minimal Touch Only (No typing/error),6,XGBoost,84.43,27.49,16.28
+Scenario 2: Minimal Touch Only (No typing/error),6,Decision Tree,80.33,27.76,16.99
+Scenario 2: Minimal Touch Only (No typing/error),6,Logistic Regression,78.09,28.11,12.44
+Scenario 2: Minimal Touch Only (No typing/error),6,SVM,79.59,27.27,14.13
+Scenario 3: Keystroke Behavior Only,3,Random Forest,100.0,100.0,100.0
+Scenario 3: Keystroke Behavior Only,3,XGBoost,99.87,100.0,100.0
+Scenario 3: Keystroke Behavior Only,3,Decision Tree,100.0,100.0,100.0
+Scenario 3: Keystroke Behavior Only,3,Logistic Regression,81.36,38.06,28.19
+Scenario 3: Keystroke Behavior Only,3,SVM,80.34,29.26,19.94
+Scenario 4: All 13 Biomechanical Features,13,Random Forest,100.0,100.0,100.0
+Scenario 4: All 13 Biomechanical Features,13,XGBoost,99.99,99.8,99.8
+Scenario 4: All 13 Biomechanical Features,13,Decision Tree,100.0,100.0,100.0
+Scenario 4: All 13 Biomechanical Features,13,Logistic Regression,88.13,35.42,24.35
+Scenario 4: All 13 Biomechanical Features,13,SVM,80.4,29.51,20.68
