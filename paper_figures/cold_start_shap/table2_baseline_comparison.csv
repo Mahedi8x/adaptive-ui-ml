@@ -1,6 +1,6 @@
-Algorithm,Accuracy (%),Precision (%),Recall (%),Macro F1 (%),Weighted F1 (%),Latency (ms/sample)
-Random Forest,99.95,99.95,99.95,99.91,99.95,0.0036
-Decision Tree (CART),99.93,99.93,99.93,99.9,99.93,0.0001
-XGBoost (Proposed),99.57,99.59,99.57,98.8,99.57,0.0013
-Support Vector Machine (SVM),98.24,98.31,98.24,95.96,98.24,0.0303
-Logistic Regression,97.75,97.8,97.75,95.54,97.75,0.0002
+Algorithm,CV Accuracy (%),CV Precision (%),CV Recall (%),CV Macro F1 (%),CV Weighted F1 (%),Latency (ms)
+Random Forest,99.94,99.94,99.94,99.89,99.94,0.0037
+Decision Tree (CART),99.93,99.93,99.93,99.88,99.93,0.0001
+XGBoost (Proposed),99.74,99.74,99.74,99.28,99.74,0.0011
+Logistic Regression,86.45,85.32,86.45,60.49,84.54,0.0002
+Support Vector Machine (SVM),78.83,71.26,78.83,34.58,74.51,0.0748
