@@ -5,26 +5,17 @@ import os
 import numpy as np
 import pandas as pd
 
-# Paths
 BASE_DIR     = r"C:\adavtive_dataset"
 RAW_HMOG_ACT = os.path.join(BASE_DIR, "raw_data", "hmog", "hmog_activity_features.csv")
 OUT_DIR      = os.path.join(BASE_DIR, "processed")
-
 os.makedirs(OUT_DIR, exist_ok=True)
 
-print("=================================================================")
-print("  Processing HMOG Raw Data into Clean Multi-Feature Ready Set")
-print("  (All 17 Columns Connected - Zero Single-Feature or Class Bias)")
-print("=================================================================")
-
-# 1. Read HMOG Raw Activities (100 users, 7,194 writing & map sessions)
-print("\n[1/3] Reading HMOG Raw Activities...")
+# Load raw HMOG activity features and keep writing + map tasks
 df_hmog = pd.read_csv(RAW_HMOG_ACT)
 hmog_clean = df_hmog[df_hmog['task_type'].isin(['writing', 'map'])].copy().reset_index(drop=True)
-print(f"      HMOG loaded: {hmog_clean.shape[0]} rows, {hmog_clean['user_id'].nunique()} users")
+print(f"Loaded HMOG: {hmog_clean.shape[0]} rows, {hmog_clean['user_id'].nunique()} users")
 
-# 2. User-Context Specific Biomechanical Imputation (No hardcoded constant 0.08 or 180.0!)
-print("\n[2/3] Linking User-Specific Typing & Swipe Profiles Across Contexts...")
+# Fill missing typing/swipe values using each user's own median in the same context
 user_ctx_writing = hmog_clean[hmog_clean['task_type'] == 'writing'].groupby(['user_id', 'context'])[['typing_speed_kpm', 'backspace_rate']].median().reset_index()
 user_writing     = hmog_clean[hmog_clean['task_type'] == 'writing'].groupby('user_id')[['typing_speed_kpm', 'backspace_rate']].median().reset_index()
 
@@ -44,8 +35,7 @@ hmog_clean['backspace_rate']   = hmog_clean['backspace_rate'].fillna(hmog_clean[
 hmog_clean['swipe_speed_mean_pxps']  = hmog_clean['swipe_speed_mean_pxps'].fillna(hmog_clean['swipe_speed_mean_pxps_uctx'] / dur_ratio).fillna(hmog_clean['swipe_speed_mean_pxps_u']).fillna(850.0)
 hmog_clean['swipe_distance_mean_px'] = hmog_clean['swipe_distance_mean_px'].fillna(hmog_clean['swipe_distance_mean_px_uctx']).fillna(hmog_clean['swipe_distance_mean_px_u']).fillna(300.0)
 
-# 3. Apply Multi-Domain Biomechanical Fitts' Law Formula Across All 13 Input Features
-print("\n[3/3] Computing Multi-Feature Biomechanical Metrics & Balanced Target Labels...")
+# Build final 17-column dataset
 rng = np.random.default_rng(42)
 final_rows = []
 
@@ -60,14 +50,14 @@ for _, row in hmog_clean.iterrows():
     tx      = float(np.clip(row['touch_x_mean'] if pd.notna(row['touch_x_mean']) else 600.0, 45.0, 1605.0))
     ty      = float(np.clip(row['touch_y_mean'] if pd.notna(row['touch_y_mean']) else 750.0, 12.0, 1925.0))
 
-    # Normalized physical factors in [0, 1]
+    # Normalize features to [0, 1]
     dur_norm     = float(np.clip((dur_ms - 120.0) / (750.0 - 120.0), 0.0, 1.0))
     contact_norm = float(np.clip((c_size - 0.019) / (0.032 - 0.019), 0.0, 1.0))
     swipe_norm   = float(np.clip((sw_spd - 500.0) / (2200.0 - 500.0), 0.0, 1.0))
     reach_norm   = float(np.clip(((tx - 650.0) / 550.0)**2 * 0.45 + ((ty - 750.0) / 650.0)**2 * 0.55, 0.0, 1.0))
     err_norm     = float(np.clip(bk_rate / 0.20, 0.0, 1.0))
 
-    # A. Physical Touch Target Miss Rate (Distinct from backspace_rate!)
+    # Estimate touch miss rate from movement, contact size, dwell time, swipe, and reach
     miss_raw = (
         0.025
         + 0.052 * walk
@@ -81,14 +71,14 @@ for _, row in hmog_clean.iterrows():
     miss_rate = float(np.clip(miss_raw, 0.02, 0.38))
     tap_acc   = 1.0 - miss_rate
 
-    # B. Multi-Factor Cognitive-Motor Reaction Latency (ms)
+    # Estimate reaction latency
     reaction_ms = float(np.clip(
         360.0 - 0.70 * typ_spd + 0.18 * dur_ms + 42.0 * walk + 0.06 * sw_dst + 45.0 * err_norm,
         180.0, 680.0
     ))
     reaction_norm = float(np.clip((reaction_ms - 180.0) / (620.0 - 180.0), 0.0, 1.0))
 
-    # C. Multi-Domain Biomechanical Decision Score (Connects ALL 13 features!)
+    # Combine all 5 feature domains into target button size score
     p_walk        = 1.0 if walk == 1 else 0.0
     p_touch       = (1.0 if dur_ms > 460.0 else 0.0) + (0.8 if c_size > 0.0254 else 0.0)
     p_swipe_reach = 0.7 if (sw_dst > 365.0 or ty > 920.0 or sw_spd > 1480.0 or tx > 900.0) else 0.0
@@ -98,7 +88,7 @@ for _, row in hmog_clean.iterrows():
     total_score = p_walk + p_touch + p_swipe_reach + p_typing + p_error
 
     if total_score >= 4.75:
-        target_btn = 3  # Extra Large (64dp)
+        target_btn = 3  # XL (64dp)
     elif total_score >= 3.25:
         target_btn = 2  # Large (56dp)
     elif total_score >= 1.75:
@@ -130,10 +120,5 @@ ready_df = pd.DataFrame(final_rows)
 
 out_csv = os.path.join(OUT_DIR, "final_ready_dataset.csv")
 ready_df.to_csv(out_csv, index=False)
-print(f"\n[OK] Clean Training Ready Dataset Saved: {out_csv}")
-print(f"     Shape: {ready_df.shape[0]} rows x {ready_df.shape[1]} columns")
-print(f"     Unique Users: {ready_df['user_id'].nunique()}")
-print(f"     Null Values: {ready_df.isna().sum().sum()}")
-print(f"     Class Distribution (target_button_size):")
-print("    ", ready_df['target_button_size'].value_counts().sort_index().to_dict())
-print("     Percentages (%):", (ready_df['target_button_size'].value_counts(normalize=True).sort_index() * 100).round(2).to_dict())
+print(f"Saved {out_csv} ({ready_df.shape[0]} rows, {ready_df.shape[1]} cols, nulls={ready_df.isna().sum().sum()})")
+print("Class counts:", ready_df['target_button_size'].value_counts().sort_index().to_dict())

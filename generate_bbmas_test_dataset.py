@@ -15,16 +15,12 @@ OUT_DIR        = os.path.join(BASE_DIR, "processed")
 os.makedirs(RAW_BBMAS_DIR, exist_ok=True)
 os.makedirs(OUT_DIR, exist_ok=True)
 
-print("=================================================================")
-print("  Processing BB-MAS Raw Data into Clean Multi-Feature Test Set")
-print("  (100% Identical Multi-Feature Formula as generate_ready_dataset.py)")
-print("=================================================================")
-
+# Load extracted BB-MAS activity features (or extract from raw sensor logs if missing)
 if os.path.exists(RAW_BBMAS_CSV):
-    print(f"\n[1/2] Loading Extracted BB-MAS Activity Features: {RAW_BBMAS_CSV}")
+    print(f"Loading BB-MAS features from {RAW_BBMAS_CSV}")
     raw_bbmas_df = pd.read_csv(RAW_BBMAS_CSV)
 else:
-    print(f"\n[1/2] Extracting BB-MAS Raw Sensor Logs from: {BBMAS_RAW_ROOT}")
+    print(f"Extracting BB-MAS raw logs from {BBMAS_RAW_ROOT}")
     def parse_bbmas_time(s):
         if not isinstance(s, str) or s == "null" or not s.strip():
             return pd.NaT
