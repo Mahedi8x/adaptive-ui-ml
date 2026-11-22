@@ -126,13 +126,4 @@ plt.tight_layout()
 fig_out = os.path.join(BASE_DIR, "paper_figures", "fig_feature_ablation_comparison.png")
 plt.savefig(fig_out, dpi=300, bbox_inches="tight")
 plt.close()
-print(f"[OK] Saved ablation comparison chart to: {fig_out}")
-
-# Mirror to adavtive_model
-mirror_dir = r"C:\Users\Mehedi\adavtive_model"
-if os.path.exists(mirror_dir):
-    import shutil
-    shutil.copy(csv_out, os.path.join(mirror_dir, "paper_figures", "feature_ablation_experiment_results.csv"))
-    shutil.copy(fig_out, os.path.join(mirror_dir, "paper_figures", "fig_feature_ablation_comparison.png"))
-    shutil.copy(__file__, os.path.join(mirror_dir, "run_feature_ablation_study.py"))
-    print("[OK] Mirrored to C:\\Users\\Mehedi\\adavtive_model")
+print(f"Saved ablation comparison chart to: {fig_out}")
