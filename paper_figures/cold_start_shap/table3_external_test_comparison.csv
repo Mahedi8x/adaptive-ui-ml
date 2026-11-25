@@ -1,6 +1,6 @@
 Algorithm,External Test Accuracy (%),External Precision (%),External Recall (%),External Macro F1 (%),External Weighted F1 (%),Inference Latency (ms)
-XGBoost (Proposed),90.92,91.05,90.92,91.44,90.86,0.001
-Random Forest,86.0,86.66,86.0,86.41,85.76,0.0108
-Decision Tree (CART),83.21,83.15,83.21,83.41,82.98,0.0001
-Logistic Regression,59.08,57.84,59.08,57.67,57.97,0.0001
-Support Vector Machine (SVM),57.02,61.3,57.02,58.6,57.72,0.1593
+XGBoost (Proposed),90.22,90.36,90.22,90.16,90.16,0.0014
+Random Forest,86.15,86.55,86.15,85.94,85.94,0.0096
+Decision Tree (CART),83.16,83.13,83.16,83.08,83.08,0.0001
+Support Vector Machine (SVM),57.01,63.5,57.01,57.43,57.43,0.3184
+Logistic Regression,57.88,57.53,57.88,57.24,57.24,0.0001

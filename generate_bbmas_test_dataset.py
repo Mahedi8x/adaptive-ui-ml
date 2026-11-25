@@ -214,12 +214,17 @@ for _, row in raw_bbmas_df.iterrows():
     })
 
 ready_bbmas_df = pd.DataFrame(ready_test_rows)
+
+# Exact 25% per class via stratified undersampling (keeps 100% real human sessions)
+min_count = ready_bbmas_df["target_button_size"].value_counts().min()
+ready_bbmas_df = pd.concat(
+    [grp.sample(min_count, random_state=42) for _, grp in ready_bbmas_df.groupby("target_button_size")],
+    ignore_index=True
+).sample(frac=1.0, random_state=42).reset_index(drop=True)
+
 ready_out_csv  = os.path.join(OUT_DIR, "bbmas_test_ready_dataset.csv")
 ready_bbmas_df.to_csv(ready_out_csv, index=False)
 
-print(f"\n[OK] Saved BB-MAS Ready Test Dataset: {ready_out_csv}")
-print(f"     Shape: {ready_bbmas_df.shape[0]} rows x {ready_bbmas_df.shape[1]} columns | Unique Users: {ready_bbmas_df['user_id'].nunique()}")
-print(f"     Null values across all 17 columns: {ready_bbmas_df.isna().sum().sum()}")
-print(f"     Class Distribution (target_button_size):")
-print("    ", ready_bbmas_df["target_button_size"].value_counts().sort_index().to_dict())
-print("     Percentages (%):", (ready_bbmas_df['target_button_size'].value_counts(normalize=True).sort_index() * 100).round(2).to_dict())
+print(f"\nSaved {ready_out_csv} ({ready_bbmas_df.shape[0]} rows, {ready_bbmas_df.shape[1]} cols, users={ready_bbmas_df['user_id'].nunique()}, nulls={ready_bbmas_df.isna().sum().sum()})")
+print("Class counts:", ready_bbmas_df["target_button_size"].value_counts().sort_index().to_dict())
+print("Class %:", (ready_bbmas_df['target_button_size'].value_counts(normalize=True).sort_index() * 100).round(2).to_dict())

@@ -118,7 +118,15 @@ for _, row in hmog_clean.iterrows():
 
 ready_df = pd.DataFrame(final_rows)
 
+# Exact 25% per class via stratified undersampling (keeps 100% real human sessions)
+min_count = ready_df['target_button_size'].value_counts().min()
+ready_df = pd.concat(
+    [grp.sample(min_count, random_state=42) for _, grp in ready_df.groupby('target_button_size')],
+    ignore_index=True
+).sample(frac=1.0, random_state=42).reset_index(drop=True)
+
 out_csv = os.path.join(OUT_DIR, "final_ready_dataset.csv")
 ready_df.to_csv(out_csv, index=False)
-print(f"Saved {out_csv} ({ready_df.shape[0]} rows, {ready_df.shape[1]} cols, nulls={ready_df.isna().sum().sum()})")
+print(f"Saved {out_csv} ({ready_df.shape[0]} rows, {ready_df.shape[1]} cols, users={ready_df['user_id'].nunique()}, nulls={ready_df.isna().sum().sum()})")
 print("Class counts:", ready_df['target_button_size'].value_counts().sort_index().to_dict())
+print("Class %:", (ready_df['target_button_size'].value_counts(normalize=True).sort_index() * 100).round(2).to_dict())

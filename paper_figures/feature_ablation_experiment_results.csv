@@ -1,21 +1,21 @@
 Feature Scenario,Num Features,Model,HMOG Train Acc (%),BB-MAS Test Acc (%),BB-MAS Weighted F1 (%)
-"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,XGBoost (Proposed),100.0,79.69,79.33
-"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,Random Forest,98.55,78.87,78.83
-"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,Decision Tree,86.74,68.23,67.25
-"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,Logistic Regression,71.1,49.29,45.71
-"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,SVM (RBF),85.17,44.9,45.09
-Scenario 2: Pure Touch & Context Only (7 features),7,XGBoost (Proposed),93.69,46.96,44.34
-Scenario 2: Pure Touch & Context Only (7 features),7,Random Forest,85.6,50.58,49.92
-Scenario 2: Pure Touch & Context Only (7 features),7,Decision Tree,71.0,49.27,46.51
-Scenario 2: Pure Touch & Context Only (7 features),7,Logistic Regression,61.54,44.2,39.66
-Scenario 2: Pure Touch & Context Only (7 features),7,SVM (RBF),68.7,37.64,37.33
-Scenario 3: Keystroke & Context Only (3 features),3,XGBoost (Proposed),72.09,42.18,41.07
-Scenario 3: Keystroke & Context Only (3 features),3,Random Forest,71.82,42.93,41.7
-Scenario 3: Keystroke & Context Only (3 features),3,Decision Tree,59.66,43.6,42.49
-Scenario 3: Keystroke & Context Only (3 features),3,Logistic Regression,52.4,43.31,41.13
-Scenario 3: Keystroke & Context Only (3 features),3,SVM (RBF),55.98,43.64,42.31
-Scenario 4: All 13 Biomechanical Features Combined,13,XGBoost (Proposed),100.0,91.4,91.37
-Scenario 4: All 13 Biomechanical Features Combined,13,Random Forest,99.25,86.0,85.76
-Scenario 4: All 13 Biomechanical Features Combined,13,Decision Tree,92.15,83.21,82.98
-Scenario 4: All 13 Biomechanical Features Combined,13,Logistic Regression,73.71,59.08,57.97
-Scenario 4: All 13 Biomechanical Features Combined,13,SVM (RBF),85.27,57.02,57.72
+"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,XGBoost (Proposed),100.0,79.47,79.3
+"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,Random Forest,98.62,77.96,77.86
+"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,Decision Tree,87.62,74.86,74.45
+"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,Logistic Regression,70.01,48.8,45.73
+"Scenario 1: Pure Motor & Typing (9 features, No miss_rate)",9,SVM (RBF),84.57,45.0,44.89
+Scenario 2: Pure Touch & Context Only (7 features),7,XGBoost (Proposed),95.62,46.96,46.0
+Scenario 2: Pure Touch & Context Only (7 features),7,Random Forest,87.78,50.89,50.54
+Scenario 2: Pure Touch & Context Only (7 features),7,Decision Tree,70.03,49.44,48.42
+Scenario 2: Pure Touch & Context Only (7 features),7,Logistic Regression,59.64,43.66,39.73
+Scenario 2: Pure Touch & Context Only (7 features),7,SVM (RBF),68.1,38.46,38.61
+Scenario 3: Keystroke & Context Only (3 features),3,XGBoost (Proposed),73.08,42.82,41.75
+Scenario 3: Keystroke & Context Only (3 features),3,Random Forest,75.02,42.99,41.74
+Scenario 3: Keystroke & Context Only (3 features),3,Decision Tree,57.04,44.27,42.94
+Scenario 3: Keystroke & Context Only (3 features),3,Logistic Regression,50.17,45.28,43.01
+Scenario 3: Keystroke & Context Only (3 features),3,SVM (RBF),54.04,45.34,42.1
+Scenario 4: All 13 Biomechanical Features Combined,13,XGBoost (Proposed),100.0,90.22,90.16
+Scenario 4: All 13 Biomechanical Features Combined,13,Random Forest,99.35,86.15,85.94
+Scenario 4: All 13 Biomechanical Features Combined,13,Decision Tree,92.57,83.16,83.08
+Scenario 4: All 13 Biomechanical Features Combined,13,Logistic Regression,72.54,57.88,57.24
+Scenario 4: All 13 Biomechanical Features Combined,13,SVM (RBF),84.76,57.01,57.43
