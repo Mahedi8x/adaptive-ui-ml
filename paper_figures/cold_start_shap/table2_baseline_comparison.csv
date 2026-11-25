@@ -1,6 +1,13 @@
 Algorithm,CV Accuracy (%),CV Precision (%),CV Recall (%),CV Macro F1 (%),CV Weighted F1 (%),Latency (ms)
-XGBoost (Proposed),94.95,95.0,94.95,94.91,94.95,0.0023
-Random Forest,91.16,91.37,91.16,91.01,91.08,0.0139
+HistGradientBoosting,96.18,96.21,96.18,96.18,96.19,0.0122
+CatBoost,96.11,96.16,96.11,96.07,96.11,0.0032
+LightGBM,96.1,96.12,96.1,96.09,96.1,0.0043
+Hybrid Ensemble (XGB+LGBM+Cat),95.83,95.87,95.83,95.81,95.83,0.0213
+XGBoost,94.95,95.0,94.95,94.91,94.95,0.0023
+Random Forest,91.16,91.37,91.16,91.01,91.08,0.019
 Decision Tree (CART),88.89,89.0,88.89,88.75,88.81,0.0002
-Support Vector Machine (SVM),79.76,80.18,79.76,79.68,79.77,0.0978
+MLP Neural Network,85.31,85.32,85.31,85.29,85.27,0.0014
+Extra Trees,81.38,81.58,81.38,81.02,81.12,0.0236
+Support Vector Machine (SVM),79.76,80.18,79.76,79.68,79.77,0.1398
+K-Nearest Neighbors (KNN),76.66,76.59,76.66,76.36,76.44,0.0471
 Logistic Regression,71.15,71.39,71.15,71.03,71.13,0.0002
