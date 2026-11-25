@@ -1,5 +1,7 @@
 import os
 import time
+import warnings
+warnings.filterwarnings('ignore')
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -12,9 +14,10 @@ from lightgbm import LGBMClassifier
 from catboost import CatBoostClassifier
 from sklearn.metrics import accuracy_score, f1_score
 
-train_path = os.path.join(os.path.dirname(__file__), "processed", "final_ready_dataset.csv")
-test_path  = os.path.join(os.path.dirname(__file__), "processed", "bbmas_test_ready_dataset.csv")
-figures_dir = os.path.join(os.path.dirname(__file__), "paper_figures", "cold_start_shap")
+base_dir = os.path.dirname(os.path.abspath(__file__))
+train_path = os.path.join(base_dir, "processed", "final_ready_dataset.csv")
+test_path  = os.path.join(base_dir, "processed", "bbmas_test_ready_dataset.csv")
+figures_dir = os.path.join(base_dir, "paper_figures", "cold_start_shap")
 os.makedirs(figures_dir, exist_ok=True)
 
 df_train = pd.read_csv(train_path)
@@ -37,13 +40,13 @@ FEATURE_COLS = [
 ]
 TARGET_COL = 'target_button_size'
 
-X = df_train[FEATURE_COLS].copy()
-y = df_train[TARGET_COL].copy().astype(int)
+X_train = df_train[FEATURE_COLS].copy()
+y_train = df_train[TARGET_COL].copy().astype(int)
 
-X_ext = df_test[FEATURE_COLS].copy()
-y_ext = df_test[TARGET_COL].copy().astype(int)
+X_test = df_test[FEATURE_COLS].copy()
+y_test = df_test[TARGET_COL].copy().astype(int)
 
-def get_candidate_models():
+def build_shuffle_models():
     return {
         'HistGradientBoosting': HistGradientBoostingClassifier(
             max_iter=200, max_depth=6, learning_rate=0.08, random_state=42
@@ -67,93 +70,149 @@ def get_candidate_models():
         )
     }
 
-print("Running 5-Step Random Shuffle-Split Cross-Validation Stability Test...")
-print("=" * 70)
 ss = ShuffleSplit(n_splits=5, test_size=0.20, random_state=42)
-
 step_records = []
 
-for step_idx, (train_idx, val_idx) in enumerate(ss.split(X, y), 1):
-    X_tr, y_tr = X.iloc[train_idx], y.iloc[train_idx]
-    X_va, y_va = X.iloc[val_idx], y.iloc[val_idx]
+for step_idx, (train_idx, val_idx) in enumerate(ss.split(X_train, y_train), 1):
+    X_tr, y_tr = X_train.iloc[train_idx], y_train.iloc[train_idx]
+    X_va, y_va = X_train.iloc[val_idx], y_train.iloc[val_idx]
 
     scaler = RobustScaler()
     X_tr_s  = scaler.fit_transform(X_tr)
     X_va_s  = scaler.transform(X_va)
-    X_ext_s = scaler.transform(X_ext)
+    X_ext_s = scaler.transform(X_test)
 
-    models = get_candidate_models()
+    models = build_shuffle_models()
     for model_name, model in models.items():
-        t0 = time.perf_counter()
         model.fit(X_tr_s, y_tr)
-        fit_time = time.perf_counter() - t0
-
-        val_preds = model.predict(X_va_s)
+        va_preds  = model.predict(X_va_s)
         ext_preds = model.predict(X_ext_s)
 
-        val_acc = accuracy_score(y_va, val_preds) * 100.0
-        ext_acc = accuracy_score(y_ext, ext_preds) * 100.0
-        ext_f1  = f1_score(y_ext, ext_preds, average='weighted', zero_division=0) * 100.0
+        va_acc  = accuracy_score(y_va, va_preds) * 100.0
+        va_f1   = f1_score(y_va, va_preds, average='weighted', zero_division=0) * 100.0
+        ext_acc = accuracy_score(y_test, ext_preds) * 100.0
+        ext_f1  = f1_score(y_test, ext_preds, average='weighted', zero_division=0) * 100.0
 
         step_records.append({
             'Step': f"Step {step_idx}",
             'Model': model_name,
-            'Train Samples': len(X_tr),
-            'Val Samples': len(X_va),
-            'Val Acc (%)': round(val_acc, 2),
-            'BB-MAS Test Acc (%)': round(ext_acc, 2),
-            'BB-MAS Weighted F1 (%)': round(ext_f1, 2)
+            'Train Size': len(X_tr),
+            'Val Size': len(X_va),
+            'Val Acc (%)': round(va_acc, 2),
+            'Val F1 (%)': round(va_f1, 2),
+            'External Test Acc (%)': round(ext_acc, 2),
+            'External Test F1 (%)': round(ext_f1, 2)
         })
 
 df_steps = pd.DataFrame(step_records)
 
-# Summary table: Mean ± Std
+# 1. Step-by-Step Scenario Table (All 5 Steps across All Models - External Test Acc)
+model_order = [
+    'HistGradientBoosting',
+    'Hybrid Ensemble (XGB+LGBM+Cat)',
+    'LightGBM',
+    'XGBoost',
+    'CatBoost',
+    'Random Forest'
+]
+
+step_test_pivot = df_steps.pivot(index='Step', columns='Model', values='External Test Acc (%)')[model_order].reset_index()
+step_test_pivot.insert(1, 'Train Size', 4588)
+step_test_pivot.insert(2, 'Val Size', 1148)
+
+step_val_pivot = df_steps.pivot(index='Step', columns='Model', values='Val Acc (%)')[model_order].reset_index()
+step_val_pivot.insert(1, 'Train Size', 4588)
+step_val_pivot.insert(2, 'Val Size', 1148)
+
+print("--- Scenario-Wise (Step 1 to Step 5) External BB-MAS Test Accuracy (%) ---")
+print(step_test_pivot.to_string(index=False))
+
+print("\n--- Scenario-Wise (Step 1 to Step 5) Internal HMOG Validation Accuracy (%) ---")
+print(step_val_pivot.to_string(index=False))
+
+# 2. Overall 5-Step Average Summary Table
 summary_rows = []
 for model_name in df_steps['Model'].unique():
     m_df = df_steps[df_steps['Model'] == model_name]
     val_m, val_s = m_df['Val Acc (%)'].mean(), m_df['Val Acc (%)'].std()
-    ext_m, ext_s = m_df['BB-MAS Test Acc (%)'].mean(), m_df['BB-MAS Test Acc (%)'].std()
-    f1_m, f1_s   = m_df['BB-MAS Weighted F1 (%)'].mean(), m_df['BB-MAS Weighted F1 (%)'].std()
+    ext_m, ext_s = m_df['External Test Acc (%)'].mean(), m_df['External Test Acc (%)'].std()
+    f1_m, f1_s   = m_df['External Test F1 (%)'].mean(), m_df['External Test F1 (%)'].std()
 
     summary_rows.append({
         'Model': model_name,
-        'Val Acc Mean (%)': round(val_m, 2),
-        'Val Acc Std': round(val_s, 2),
-        'BB-MAS Test Acc Mean (%)': round(ext_m, 2),
-        'BB-MAS Test Acc Std': round(ext_s, 2),
-        'BB-MAS Test F1 Mean (%)': round(f1_m, 2),
-        'BB-MAS Test F1 Std': round(f1_s, 2),
-        'Summary (Test Acc)': f"{ext_m:.2f} ± {ext_s:.2f}%"
+        'Avg Val Acc (%)': round(val_m, 2),
+        'Val Std (%)': round(val_s, 2),
+        'Avg External Test Acc (%)': round(ext_m, 2),
+        'Test Std (%)': round(ext_s, 2),
+        'Avg External Test F1 (%)': round(f1_m, 2),
+        '5-Step Test Stability': f"{ext_m:.2f} ± {ext_s:.2f}%"
     })
 
-df_summary = pd.DataFrame(summary_rows).sort_values(by='BB-MAS Test Acc Mean (%)', ascending=False).reset_index(drop=True)
-summary_csv = os.path.join(figures_dir, 'table_shuffle_split_stability.csv')
-df_summary.to_csv(summary_csv, index=False)
+df_summary = pd.DataFrame(summary_rows).sort_values(
+    by=['Avg External Test Acc (%)', 'Avg Val Acc (%)'], ascending=False
+).reset_index(drop=True)
+df_summary.insert(0, 'Rank', range(1, len(df_summary) + 1))
 
-print("\n--- 5-Step Shuffle-Split Cross-Validation Stability Summary ---")
-print(df_summary[['Model', 'Val Acc Mean (%)', 'Val Acc Std', 'BB-MAS Test Acc Mean (%)', 'BB-MAS Test Acc Std', 'Summary (Test Acc)']].to_string(index=False))
+print("\n--- 5-Step Random Shuffle-Split Average & Ranking Summary ---")
+print(df_summary.to_string(index=False))
 
-# Visualization
-plt.figure(figsize=(12, 5.5))
+# 3. Winner Model Step-by-Step Breakdown (Classic Format)
+winner_name = df_summary.loc[0, 'Model']
+winner_steps = df_steps[df_steps['Model'] == winner_name][
+    ['Step', 'Train Size', 'Val Size', 'Val Acc (%)', 'External Test Acc (%)', 'External Test F1 (%)']
+].reset_index(drop=True)
+
+print(f"\n--- Winning Model ({winner_name}) Detailed 5-Step Breakdown ---")
+print(winner_steps.to_string(index=False))
+
+print("\n" + "=" * 75)
+print(f"WINNING MODEL (5-Step Shuffle-Split Average): {winner_name}")
+print(f"-> Average Internal Validation Accuracy across 5 random steps: {df_summary.loc[0, 'Avg Val Acc (%)']:.2f}% (±{df_summary.loc[0, 'Val Std (%)']:.2f}%)")
+print(f"-> Average External BB-MAS Test Accuracy across 5 random steps: {df_summary.loc[0, 'Avg External Test Acc (%)']:.2f}% (±{df_summary.loc[0, 'Test Std (%)']:.2f}%)")
+print(f"-> Average External BB-MAS Test F1-Score across 5 random steps: {df_summary.loc[0, 'Avg External Test F1 (%)']:.2f}%")
+print("=" * 75)
+
+# Save CSVs
+df_summary.to_csv(os.path.join(figures_dir, 'table_shuffle_split_stability.csv'), index=False)
+step_test_pivot.to_csv(os.path.join(figures_dir, 'table_shuffle_split_stepwise_test.csv'), index=False)
+
+# Plotting
+fig, axes = plt.subplots(1, 2, figsize=(15, 5.2))
+
+# Left subplot: All models across 5 steps
 palette = ['#1d3557', '#457b9d', '#2a9d8f', '#e76f51', '#f4a261', '#6c757d']
 sns.barplot(
     data=df_steps,
     x='Step',
-    y='BB-MAS Test Acc (%)',
+    y='External Test Acc (%)',
     hue='Model',
+    hue_order=model_order,
     palette=palette,
     edgecolor='black',
-    alpha=0.9
+    alpha=0.9,
+    ax=axes[0]
 )
-plt.title("5-Step Random Shuffle-Split Stability on Unseen BB-MAS Users\n(Evaluating Robustness Across Random 80/20 Internal Partitions)", fontsize=12, pad=12, fontweight='bold')
-plt.xlabel("Shuffle Split Run", fontsize=11, fontweight='bold')
-plt.ylabel("External Test Accuracy (%)", fontsize=11, fontweight='bold')
-plt.ylim(80, 95)
-plt.legend(bbox_to_anchor=(1.02, 1), loc='upper left', frameon=True, fontsize=9.5)
-plt.grid(axis='y', linestyle=':', alpha=0.6)
+axes[0].set_title("A) All Models Across 5 Random Shuffle Scenarios\n(BB-MAS Unseen Users External Test Accuracy)", fontsize=11.5, fontweight='bold', pad=10)
+axes[0].set_xlabel("Shuffle Scenario", fontsize=10.5, fontweight='bold')
+axes[0].set_ylabel("External Test Accuracy (%)", fontsize=10.5, fontweight='bold')
+axes[0].set_ylim(82, 94)
+axes[0].legend(loc='lower right', frameon=True, fontsize=8.5)
+axes[0].grid(axis='y', linestyle=':', alpha=0.6)
+
+# Right subplot: Winning model Internal Val vs External Test across 5 steps
+x_pos = np.arange(len(winner_steps))
+w = 0.35
+axes[1].bar(x_pos - w/2, winner_steps['Val Acc (%)'], w, label='Internal Val Acc (%)', color='#2b5c8f', edgecolor='black')
+axes[1].bar(x_pos + w/2, winner_steps['External Test Acc (%)'], w, label='BB-MAS External Test Acc (%)', color='#e76f51', edgecolor='black')
+axes[1].set_xticks(x_pos)
+axes[1].set_xticklabels(winner_steps['Step'], fontsize=10.5, fontweight='bold')
+axes[1].set_ylabel("Accuracy (%)", fontsize=10.5, fontweight='bold')
+axes[1].set_title(f"B) Winning Model ({winner_name})\n5-Step Internal Val vs. External Test Stability", fontsize=11.5, fontweight='bold', pad=10)
+axes[1].set_ylim(85, 100)
+axes[1].legend(loc='lower right', frameon=True, fontsize=9.5)
+axes[1].grid(axis='y', linestyle=':', alpha=0.6)
+
 plt.tight_layout()
 fig_path = os.path.join(figures_dir, 'fig_shuffle_split_stability.png')
 plt.savefig(fig_path, dpi=300)
 plt.close()
-print(f"\nFigure saved to: {fig_path}")
-print(f"Summary table saved to: {summary_csv}")
