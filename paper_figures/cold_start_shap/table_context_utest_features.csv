@@ -1,0 +1,13 @@
+Biomechanical Feature,Sitting Median,Walking Median,Mann-Whitney U,U-test p-value,Shift Verdict
+tap_accuracy,0.857,0.806,2490082.5,< 0.0001 ***,Highly Significant (p < 0.001)
+miss_rate,0.143,0.194,609041.5,< 0.0001 ***,Highly Significant (p < 0.001)
+reaction_time_norm,0.363,0.456,897041.5,< 0.0001 ***,Highly Significant (p < 0.001)
+reaction_time_mean_ms,339.91,380.515,897071.0,< 0.0001 ***,Highly Significant (p < 0.001)
+contact_size_mean,0.036,0.023,1835040.5,< 0.0001 ***,Highly Significant (p < 0.001)
+touch_y_mean,615.63,737.175,1281721.0,< 0.0001 ***,Highly Significant (p < 0.001)
+backspace_rate,0.092,0.117,1284423.0,< 0.0001 ***,Highly Significant (p < 0.001)
+touch_x_mean,843.6,900.79,1316784.0,< 0.0001 ***,Highly Significant (p < 0.001)
+typing_speed_kpm,188.1,197.715,1324012.0,< 0.0001 ***,Highly Significant (p < 0.001)
+swipe_distance_mean_px,344.56,378.025,1369234.0,< 0.0001 ***,Highly Significant (p < 0.001)
+swipe_speed_mean_pxps,1202.355,1400.51,1388635.0,< 0.0001 ***,Highly Significant (p < 0.001)
+touch_duration_mean_ms,350.71,345.165,1609178.0,0.0500 *,Significant (p < 0.05)
