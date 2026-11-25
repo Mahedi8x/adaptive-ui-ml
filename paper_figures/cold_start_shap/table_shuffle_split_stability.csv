@@ -1,0 +1,7 @@
+Model,Val Acc Mean (%),Val Acc Std,BB-MAS Test Acc Mean (%),BB-MAS Test Acc Std,BB-MAS Test F1 Mean (%),BB-MAS Test F1 Std,Summary (Test Acc)
+HistGradientBoosting,97.23,0.51,90.7,0.67,90.69,0.67,90.70 ± 0.67%
+Hybrid Ensemble (XGB+LGBM+Cat),97.21,0.72,90.67,0.64,90.64,0.64,90.67 ± 0.64%
+LightGBM,97.12,0.73,90.66,0.5,90.64,0.5,90.66 ± 0.50%
+XGBoost,96.39,1.07,89.84,0.74,89.8,0.74,89.84 ± 0.74%
+CatBoost,96.69,0.65,89.66,0.76,89.64,0.75,89.66 ± 0.76%
+Random Forest,93.03,1.14,85.83,0.29,85.64,0.28,85.83 ± 0.29%
