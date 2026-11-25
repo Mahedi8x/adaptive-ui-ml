@@ -1,13 +1,13 @@
 Algorithm,External Test Accuracy (%),External Precision (%),External Recall (%),External Macro F1 (%),External Weighted F1 (%),Inference Latency (ms)
-HistGradientBoosting,91.87,92.03,91.87,91.86,91.86,0.0078
-Hybrid Ensemble (XGB+LGBM+Cat),91.51,91.72,91.51,91.48,91.48,0.0084
-LightGBM,91.31,91.51,91.31,91.29,91.29,0.003
-CatBoost,90.87,91.05,90.87,90.84,90.84,0.001
-XGBoost,90.25,90.38,90.25,90.18,90.18,0.0013
-Random Forest,86.15,86.55,86.15,85.94,85.94,0.0127
+HistGradientBoosting,91.87,92.03,91.87,91.86,91.86,0.0074
+Hybrid Ensemble (XGB+LGBM+Cat),91.51,91.72,91.51,91.48,91.48,0.0075
+LightGBM,91.31,91.51,91.31,91.29,91.29,0.0029
+CatBoost,90.87,91.05,90.87,90.84,90.84,0.0007
+XGBoost,90.25,90.38,90.25,90.18,90.18,0.001
+Random Forest,86.15,86.55,86.15,85.94,85.94,0.0096
 Decision Tree (CART),83.16,83.13,83.16,83.08,83.08,0.0002
-Extra Trees,76.45,77.31,76.45,76.36,76.36,0.0121
-MLP Neural Network,65.2,70.11,65.2,65.24,65.24,0.0014
-Support Vector Machine (SVM),57.01,63.5,57.01,57.43,57.43,0.1394
-Logistic Regression,57.88,57.53,57.88,57.24,57.24,0.0003
-K-Nearest Neighbors (KNN),58.24,57.08,58.24,57.04,57.04,0.0399
+Extra Trees,76.45,77.31,76.45,76.36,76.36,0.0111
+MLP Neural Network,65.2,70.11,65.2,65.24,65.24,0.0012
+Support Vector Machine (SVM),57.01,63.5,57.01,57.43,57.43,0.1245
+Logistic Regression,57.88,57.53,57.88,57.24,57.24,0.0002
+K-Nearest Neighbors (KNN),58.24,57.08,58.24,57.04,57.04,0.0334

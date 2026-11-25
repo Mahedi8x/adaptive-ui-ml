@@ -117,17 +117,17 @@ model_order = [
 ]
 
 step_test_pivot = df_steps.pivot(index='Step', columns='Model', values='External Test Acc (%)')[model_order].reset_index()
-step_test_pivot.insert(1, 'Train Size', 4588)
-step_test_pivot.insert(2, 'Val Size', 1148)
+step_test_pivot.insert(1, 'HMOG Train (80%)', 4588)
+step_test_pivot.insert(2, 'HMOG Val (20%)', 1148)
 
 step_val_pivot = df_steps.pivot(index='Step', columns='Model', values='Val Acc (%)')[model_order].reset_index()
-step_val_pivot.insert(1, 'Train Size', 4588)
-step_val_pivot.insert(2, 'Val Size', 1148)
+step_val_pivot.insert(1, 'HMOG Train (80%)', 4588)
+step_val_pivot.insert(2, 'HMOG Val (20%)', 1148)
 
-print("--- Scenario-Wise (Step 1 to Step 5) External BB-MAS Test Accuracy (%) ---")
+print("--- 5-Step Shuffle Scenarios: Unseen BB-MAS Test Accuracy (%) [Trained Only on HMOG] ---")
 print(step_test_pivot.to_string(index=False))
 
-print("\n--- Scenario-Wise (Step 1 to Step 5) Internal HMOG Validation Accuracy (%) ---")
+print("\n--- 5-Step Shuffle Scenarios: Internal HMOG Validation Accuracy (%) ---")
 print(step_val_pivot.to_string(index=False))
 
 # 2. Overall 5-Step Average Summary Table
