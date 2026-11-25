@@ -1,0 +1,3 @@
+Severity Category,Session Count,Share of All Test Sessions (%),Share of Errors Only (%)
+Exact Match (Correct),3289,91.87,N/A (Correct)
+Adjacent Error (Off by ±1 step - Safe),291,8.13,100.00%

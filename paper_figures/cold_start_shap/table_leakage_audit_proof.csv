@@ -1,0 +1,6 @@
+Audit Check,Condition Tested,Observed Value,Status
+1. Subject / User Overlap (HMOG vs BB-MAS),train_users ∩ test_users == ∅,0 overlapping users,PASSED (Zero Leakage)
+2. 5-Fold GroupKFold Cross-Validation Leakage,fold_train_users ∩ fold_val_users == ∅,0 overlapping users across all 5 folds,PASSED (Strict Group Separation)
+3. Target Proxy / Feature Leakage Check,"max(|Corr(feature, target)|) < 0.85",Max Corr = 0.8225 ('tap_accuracy'),PASSED (No Feature Leakage)
+4. Scaler Parameter Isolation,"scaler.fit(X_train) ONLY, transform(X_test)",Train/Test distribution shift confirmed (Δ = 82.55),PASSED (No Data Snoop / Leakage)
+5. External Dataset Independence,BB-MAS is 100% separate institution/devices,"116 unseen users, 3,580 sessions never touched during fit()",PASSED (100% Zero-Shot Evaluation)

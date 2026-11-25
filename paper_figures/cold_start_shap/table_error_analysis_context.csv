@@ -1,0 +1,3 @@
+context_is_walking,Total_Sessions,Correct,Errors,Accuracy_Pct,Context,Error_Rate_Pct
+0,2114,1888,226,89.31,Sitting / Stationary,10.69
+1,1466,1401,65,95.57,Walking / In-Motion,4.43
