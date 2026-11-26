@@ -1,8 +1,8 @@
-Metric,Mean,95% CI Lower,95% CI Upper,Margin
-Overall Test Accuracy (Bootstrap),91.86%,91.00%,92.74%,±0.87%
-Overall Test Accuracy (Wilson Score),91.87%,90.93%,92.72%,±0.90%
-Macro F1-Score,91.85%,91.02%,92.71%,±0.84%
-Weighted F1-Score,91.85%,90.98%,92.73%,±0.88%
-Sitting Context Accuracy,89.31%,87.98%,90.59%,±1.30%
-Walking Context Accuracy,95.55%,94.47%,96.52%,±1.03%
-Interaction Risk (Cost per Tap),0.0942,0.0835,0.1047,±0.0106
+Metric,Mean,95% CI Lower,95% CI Upper,Std Dev
+Overall Test Accuracy (Bootstrap B=2000),91.86%,91.00%,92.74%,±0.46%
+Overall Test Accuracy (Wilson Score),91.87%,90.93%,92.72%,N/A
+Macro F1-Score,91.85%,91.02%,92.71%,±0.45%
+Weighted F1-Score,91.85%,90.98%,92.73%,±0.46%
+Sitting Context Accuracy,89.31%,87.98%,90.59%,±0.68%
+Walking Context Accuracy,95.55%,94.47%,96.52%,±0.53%
+Interaction Risk (Cost per Tap),0.0942,0.0835,0.1047,±0.0055
