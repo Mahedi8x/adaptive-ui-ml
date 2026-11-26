@@ -1,0 +1,6 @@
+Adaptation Policy,Session 1 Acc (%),Sess 15-19 Acc (%),Overall Acc (%),Macro Acc (%),Avg Risk/Tap,19-Sess Cum. Risk,Risk Reduction vs Static (%)
+Static Standard UI (Fixed 48dp),21.55,25.17,25.0,25.0,1.75,32.41,+0.00%
+"Context-Only Binary Rule (Sit=48, Walk=64)",40.52,34.48,36.48,36.48,1.2321,22.66,+30.08%
+Pure Online RL / Cold LinUCB (No Prior),12.07,36.38,33.07,33.07,1.7944,37.47,-15.61%
+Proposed Tier-1 Cold-Start (HistGB),93.97,93.45,91.87,91.87,0.0941,1.87,+94.23%
+Proposed Two-Tier Hybrid (HistGB + LinUCB),93.97,93.45,91.93,91.93,0.0939,1.9,+94.15%
