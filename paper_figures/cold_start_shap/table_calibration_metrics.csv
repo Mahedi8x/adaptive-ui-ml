@@ -1,0 +1,6 @@
+Evaluation Target,Brier Score (Lower is Better),Expected Calibration Error ECE (%),Calibration Quality
+Overall Model (Top-Confidence Decision),0.0351,5.38%,"Excellent (ECE < 6%, Brier < 0.05)"
+Class: Small (40dp),0.0084,0.87%,Well-Calibrated (Brier < 0.07)
+Class: Default (48dp),0.0369,2.72%,Well-Calibrated (Brier < 0.07)
+Class: Large (56dp),0.0618,5.00%,Well-Calibrated (Brier < 0.07)
+Class: Extra Large (64dp),0.0331,3.17%,Well-Calibrated (Brier < 0.07)
