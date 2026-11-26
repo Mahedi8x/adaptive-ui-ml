@@ -1,0 +1,6 @@
+Baseline Model,Champ Macro F1 (%),Baseline Macro F1 (%),Mean Diff (+%),Paired t-stat,Paired t p-value,Mann-Whitney U,U-test p-value,Significance
+Random Forest,90.43 ± 0.54,85.67 ± 0.23,4.76,25.427,< 0.0001 ***,100.0,0.0002 ***,Significant (p < 0.05)
+XGBoost,90.43 ± 0.54,88.94 ± 0.52,1.5,8.255,< 0.0001 ***,97.0,0.0004 ***,Significant (p < 0.05)
+CatBoost,90.43 ± 0.54,89.94 ± 0.77,0.5,2.06,0.0694 (ns),67.0,0.2121 (ns),Top-Tier Equivalent (ns)
+Hybrid Ensemble (XGB+LGBM+Cat),90.43 ± 0.54,90.17 ± 0.58,0.27,1.599,0.1443 (ns),63.5,0.3256 (ns),Top-Tier Equivalent (ns)
+LightGBM,90.43 ± 0.54,90.29 ± 0.66,0.15,0.936,0.3737 (ns),58.0,0.5708 (ns),Top-Tier Equivalent (ns)
