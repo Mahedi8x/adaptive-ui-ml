@@ -1,0 +1,10 @@
+Iteration,Stage Remark,Train Loss,Validation Loss,Unseen Test Loss,Train Acc (%),Val Acc (%),Unseen Test Acc (%)
+1,Initial Step,1.1469,1.1588,1.1808,91.3,87.8,83.8
+10,Mid-Training,0.4065,0.4542,0.5735,94.09,90.59,84.89
+25,Mid-Training,0.1551,0.2287,0.3724,97.25,92.77,87.54
+50,Mid-Training,0.0473,0.1379,0.3134,99.87,94.95,88.38
+75,Mid-Training,0.0152,0.1114,0.3022,100.0,96.08,88.88
+84,Optimal Test Loss,0.0105,0.1068,0.2962,100.0,96.43,89.36
+100,Mid-Training,0.0054,0.1038,0.3014,100.0,96.6,90.06
+150,Mid-Training,0.0006,0.1043,0.3353,100.0,96.78,90.36
+200,Final Iteration,0.0001,0.1097,0.3709,100.0,97.13,90.61
