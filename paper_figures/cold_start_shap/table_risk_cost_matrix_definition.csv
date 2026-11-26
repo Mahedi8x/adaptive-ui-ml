@@ -1,0 +1,5 @@
+,Pred Small (40dp),Pred Default (48dp),Pred Large (56dp),Pred Extra Large (64dp)
+True Small (40dp),0,1,3,6
+True Default (48dp),2,0,1,3
+True Large (56dp),4,2,0,1
+True Extra Large (64dp),8,4,2,0
